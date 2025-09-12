@@ -21,10 +21,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Go 1.21
-      uses: actions/setup-go@v2
+        
+    - name: Run golangci-lint
+      uses: golangci/golangci-lint-action@v6
       with:
-        go-version: 1.21
+       version: v1.59.2   # latest stable version jo Go 1.22+ compatible hai
+
 
     - name: Build
       run: go build -o go-web-app
