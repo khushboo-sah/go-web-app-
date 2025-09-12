@@ -21,31 +21,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-        
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v6
       with:
-       version: v1.59.2   # latest stable version jo Go 1.22+ compatible hai
-
+        version: v1.59.2   # Go 1.22+ compatible
 
     - name: Build
       run: go build -o go-web-app
 
     - name: Test
       run: go test ./...
-  
-  code-quality:
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v6
-      with:
-        version: v1.56.2
-  
   push:
     runs-on: ubuntu-latest
 
@@ -70,10 +56,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-web-app:${{github.run_id}}
-
-        ## To push latest tag as well, uncomment the line below
-
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/go-web-app:${{ github.run_id }}
 
   update-newtag-in-helm-chart:
     runs-on: ubuntu-latest
@@ -88,7 +71,7 @@ jobs:
 
     - name: Update tag in Helm chart
       run: |
-        sed -i 's/tag: .*/tag: "${{github.run_id}}"/' helm/go-web-app-chart/values.yaml
+        sed -i 's/tag: .*/tag: "${{ github.run_id }}"/' helm/go-web-app-chart/values.yaml
 
     - name: Commit and push changes
       run: |
@@ -97,4 +80,3 @@ jobs:
         git add helm/go-web-app-chart/values.yaml
         git commit -m "Update tag in Helm chart"
         git push
-
