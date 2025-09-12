@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
-namespace: go-web-app 
 metadata:
   name: go-web-app
+  namespace: go-web-app 
   labels:
     app: go-web-app
 spec:
