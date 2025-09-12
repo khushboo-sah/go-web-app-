@@ -25,6 +25,7 @@ jobs:
       uses: golangci/golangci-lint-action@v6
       with:
         version: v1.59.2   # Go 1.22+ compatible
+        install-mode: binary
 
     - name: Build
       run: go build -o go-web-app
